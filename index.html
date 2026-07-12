@@ -3,155 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bio Của Tôi - Colorful & Chill</title>
+    <title>Bio Cá Nhân - Kiệt Vũ</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tải Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for Icons -->
+    
+    <!-- Tải Font Awesome cho các Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tải Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            background-color: #1a1a2e;
+            min-height: 100vh;
+            /* Ảnh nền trang */
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8EP4ai6ji-YOm2XYJAtGI3cb7sOdIXbB6bivY21pIb1mVEk2pMxZ4k_z4&s=10');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Quicksand', sans-serif;
+        /* Lớp phủ làm mờ ảnh nền để nổi bật chữ */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: -1;
         }
 
-        /* Animated Gradient Background */
-        .bg-animated {
-            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a18cd1, #fbc2eb, #8fd3f4, #84fab0);
-            background-size: 400% 400%;
-            animation: gradient-bg 15s ease infinite;
+        /* Container chứa bong bóng bay */
+        #bubbles-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        @keyframes gradient-bg {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Glassmorphism Styles */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-        }
-
-        .glass-btn {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .glass-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        /* Floating Particles Animation (Hiệu ứng bay bổng) */
-        @keyframes float-up {
-            0% {
-                transform: translateY(100vh) scale(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-20vh) scale(1.5) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .particle, .music-note {
+        .bubble {
             position: absolute;
             bottom: -50px;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .particle {
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
+            animation: floatUp infinite ease-in;
+            backdrop-filter: blur(2px);
         }
 
-        /* Music Player Disk Spin */
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
 
-        .spin {
-            animation: spin 4s linear infinite;
-        }
-
-        .spin-paused {
-            animation-play-state: paused;
-        }
-
-        /* Avatar glow */
-        .avatar-glow {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4);
+        /* Nút bấm Glassmorphism */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
         
-        /* ZingMP3 Style Gradient Text */
-        .zing-text {
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 10;
         }
     </style>
 </head>
 
-<body class="min-h-screen relative flex items-center justify-center p-4 sm:p-8 text-gray-800 bg-cover bg-center bg-fixed" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8EP4ai6ji-YOm2XYJAtGI3cb7sOdIXbB6bivY21pIb1mVEk2pMxZ4k_z4&s=10');">
+<body class="antialiased">
+    <!-- Overlay mờ -->
+    <div class="bg-overlay"></div>
     
-    <!-- Lớp phủ mờ (overlay) cho ảnh nền để dễ đọc chữ -->
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] z-0 pointer-events-none"></div>
+    <!-- Vùng chứa bong bóng bay bổng -->
+    <div id="bubbles-container"></div>
 
-    <!-- Container cho các hạt bay bổng -->
-    <div id="particles-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
-
-    <!-- Thẻ Bio Chính -->
-    <div class="glass-panel w-full max-w-md rounded-3xl p-6 sm:p-10 relative z-10 flex flex-col items-center">
+    <!-- Nội dung chính -->
+    <div class="main-container max-w-md mx-auto pt-16 pb-20 px-5 flex flex-col items-center">
         
-        <!-- Avatar -->
-        <div class="relative group cursor-pointer mb-6">
-            <div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-purple-500 via-pink-500 to-yellow-400 avatar-glow transition-transform duration-500 group-hover:scale-105 group-hover:rotate-6">
-                <!-- Ảnh Avatar -->
-                <img src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t39.30808-6/679365368_1623643732204589_1495274690089814710_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=AN72wMzl44wQ7kNvwFl_WHF&_nc_oc=Adpq1oLvkVWNmau9E2NxIzed9Z9gn_EqG7CPYHiPqKQc6uucwcQjN86jSRYaRgERo_kqN1y1B_I6ljMAokOpF7mg&_nc_zt=23&_nc_ht=scontent.fsgn5-3.fna&_nc_gid=88ptrUvSFZc2Q_cJaZGhEQ&_nc_ss=7b2a8&oh=00_AQBbIG49IewnP2Gd5YAfWV2BAgKJi8Mh6lTrD7_fUL9Wcg&oe=6A599C85" alt="Avatar" class="w-full h-full rounded-full object-cover border-4 border-white/50 bg-white">
+        <!-- Ảnh Đại Diện -->
+        <div class="relative w-28 h-28 mb-4">
+            <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 rounded-full animate-spin-slow" style="animation-duration: 4s; padding: 3px;">
+                <img 
+                    src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t39.30808-6/679365368_1623643732204589_1495274690089814710_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=AN72wMzl44wQ7kNvwFl_WHF&_nc_oc=Adpq1oLvkVWNmau9E2NxIzed9Z9gn_EqG7CPYHiPqKQc6uucwcQjN86jSRYaRgERo_kqN1y1B_I6ljMAokOpF7mg&_nc_zt=23&_nc_ht=scontent.fsgn5-3.fna&_nc_gid=88ptrUvSFZc2Q_cJaZGhEQ&_nc_ss=7b2a8&oh=00_AQBbIG49IewnP2Gd5YAfWV2BAgKJi8Mh6lTrD7_fUL9Wcg&oe=6A599C85" 
+                    alt="Kiệt Vũ" 
+                    class="w-full h-full object-cover rounded-full border-4 border-white/80"
+                >
             </div>
-            <!-- Nốt nhạc nhỏ bay ra từ avatar khi hover -->
-            <i class="fas fa-music absolute top-0 right-0 text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-y-4 translate-x-4"></i>
         </div>
 
-        <!-- Tên và Mô tả -->
-        <h1 class="text-3xl font-bold text-gray-900 mb-2 tracking-wide text-center">Kiệt Vũ</h1>
-        <p class="text-sm font-medium text-gray-700 bg-white/40 px-4 py-1 rounded-full mb-6">✨ Just chilling and vibing ✨</p>
+        <!-- Tên và Bio -->
+        <h1 class="text-2xl font-bold text-white mb-2 tracking-wide drop-shadow-md">Kiệt Vũ</h1>
+        <p class="text-sm text-gray-200 mb-8 text-center px-4 font-light drop-shadow">
+            Chào mừng đến với không gian âm nhạc và màu sắc của tôi ✨
+        </p>
 
-        <!-- Danh sách Link Mạng Xã Hội -->
+        <!-- Danh sách Link -->
         <div class="w-full flex flex-col gap-4 mb-8">
+            
             <!-- Facebook -->
             <a href="https://www.facebook.com/messages/t/6606528699419963" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl shadow-md group-hover:bg-blue-700 transition-colors">
-                        <i class="fab fa-facebook-messenger"></i>
+                    <div class="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white text-xl shadow-md group-hover:bg-[#166FE5] transition-colors">
+                        <i class="fab fa-facebook-f"></i>
                     </div>
-                    <span>Nhắn tin Facebook</span>
+                    <span>Facebook Message</span>
                 </div>
                 <i class="fas fa-chevron-right text-gray-400 group-hover:text-gray-800 transition-colors"></i>
             </a>
@@ -159,7 +128,7 @@
             <!-- Instagram -->
             <a href="https://www.instagram.com/" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-md">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#833AB4] flex items-center justify-center text-white text-xl shadow-md">
                         <i class="fab fa-instagram"></i>
                     </div>
                     <span>Instagram</span>
@@ -170,7 +139,7 @@
             <!-- TikTok -->
             <a href="https://www.tiktok.com/@kietvu8480" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-xl shadow-md">
+                    <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-xl shadow-md group-hover:bg-gray-800 transition-colors">
                         <i class="fab fa-tiktok"></i>
                     </div>
                     <span>TikTok</span>
@@ -190,7 +159,7 @@
             </a>
         </div>
 
-        <!-- Trình Phát Video MP4 -->
+        <!-- Trình Phát Video MP4 (Sửa tên thành video.mp4.mp4 theo ảnh) -->
         <div class="w-full bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col gap-3">
             <div class="flex items-center justify-between mb-1">
                 <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
@@ -199,15 +168,14 @@
                 <span class="text-xs font-semibold text-gray-700 bg-white/60 px-3 py-1 rounded-full truncate max-w-[140px]">BTT - SPIDEYBOY</span>
             </div>
             
-            <!-- Container responsive cho Video MP4 -->
             <div class="w-full aspect-video rounded-xl overflow-hidden shadow-inner bg-black">
-                <!-- Đã cập nhật src thành tên file video bạn vừa tải lên -->
+                <!-- Tên file chính xác trên GitHub của bạn là video.mp4.mp4 -->
                 <video 
                     class="w-full h-full object-cover" 
                     controls 
                     loop 
                     playsinline
-                    src="BTT - SPIDEYBOY (ft. Dangrangto x MPaKK) _ Official Music Video.mp4">
+                    src="video.mp4.mp4">
                     Trình duyệt của bạn không hỗ trợ thẻ video.
                 </video>
             </div>
@@ -217,48 +185,30 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- 1. HIỆU ỨNG HẠT BAY BỔNG (BONG BÓNG & NỐT NHẠC) ---
-            const container = document.getElementById('particles-container');
-            const musicNotes = ['♪', '♫', '♬', '♩'];
-            const colors = ['#ffffff', '#ff9a9e', '#a18cd1', '#8fd3f4', '#fbc2eb'];
+            const bubblesContainer = document.getElementById('bubbles-container');
+            const bubbleCount = 15; // Số lượng bong bóng
 
-            function createParticle() {
-                const el = document.createElement('div');
-                
-                // Random 50% bong bóng, 50% nốt nhạc
-                if (Math.random() > 0.5) {
-                    el.classList.add('particle');
-                    const size = Math.random() * 20 + 10; // 10px - 30px
-                    el.style.width = `${size}px`;
-                    el.style.height = `${size}px`;
-                } else {
-                    el.classList.add('music-note');
-                    el.innerText = musicNotes[Math.floor(Math.random() * musicNotes.length)];
-                    el.style.fontSize = `${Math.random() * 20 + 16}px`; // 16px - 36px
-                    el.style.color = colors[Math.floor(Math.random() * colors.length)];
-                }
-
-                // Vị trí random
-                el.style.left = `${Math.random() * 100}vw`;
-                
-                // Thời gian bay random
-                const duration = Math.random() * 10 + 5; // 5s - 15s
-                el.style.animation = `float-up ${duration}s linear forwards`;
-                
-                // Xóa element khi animation kết thúc để tránh nặng máy
-                el.addEventListener('animationend', () => {
-                    el.remove();
-                });
-
-                container.appendChild(el);
+            for (let i = 0; i < bubbleCount; i++) {
+                createBubble();
             }
 
-            // Tạo hạt liên tục
-            setInterval(createParticle, 400);
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random kích thước, vị trí và thời gian bay
+                const size = Math.random() * 40 + 10; // 10px - 50px
+                const left = Math.random() * 100; // 0% - 100%
+                const duration = Math.random() * 10 + 5; // 5s - 15s
+                const delay = Math.random() * 5; // 0s - 5s
 
-            // Tạo một vài hạt ngay lúc đầu
-            for(let i=0; i<15; i++) {
-                setTimeout(createParticle, i * 100);
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}%`;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = `${delay}s`;
+
+                bubblesContainer.appendChild(bubble);
             }
         });
     </script>
