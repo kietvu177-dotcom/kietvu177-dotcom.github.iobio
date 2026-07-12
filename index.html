@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Cá Nhân - Kiệt Vũ</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Font Awesome cho các Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tải Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            /* Ảnh nền trang bìa */
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8EP4ai6ji-YOm2XYJAtGI3cb7sOdIXbB6bivY21pIb1mVEk2pMxZ4k_z4&s=10');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Lớp phủ mờ đè lên ảnh nền để dễ đọc chữ */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,107,107,0.6) 0%, rgba(78,205,196,0.6) 100%);
+            backdrop-filter: blur(8px); /* Làm nhòe ảnh nền một chút */
+            -webkit-backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        /* Hiệu ứng kính (Glassmorphism) cho thẻ Bio */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+        }
+
+        /* Hiệu ứng kính cho các nút bấm */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animation cho các phần tử bay bổng */
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        .floating-element {
+            position: fixed;
+            bottom: -20px;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 15s linear infinite;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center py-10 px-4">
+
+    <!-- Lớp phủ nền -->
+    <div class="bg-overlay"></div>
+
+    <!-- Nơi chứa các phần tử bay bổng (sẽ được tạo bằng JS) -->
+    <div id="floating-container"></div>
+
+    <!-- Thẻ Bio Chính -->
+    <div class="glass-card w-full max-w-md rounded-3xl p-8 flex flex-col items-center relative z-10">
+        
+        <!-- Ảnh Đại Diện -->
+        <div class="relative w-32 h-32 mb-4">
+            <!-- Vòng sáng mờ bao quanh viền -->
+            <div class="absolute inset-0 bg-white/40 rounded-full blur-md animate-pulse"></div>
+            <!-- Ảnh thật -->
+            <img src="https://scontent.fsgn5-3.fna.fbcdn.net/v/t39.30808-6/679365368_1623643732204589_1495274690089814710_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=AN72wMzl44wQ7kNvwFl_WHF&_nc_oc=Adpq1oLvkVWNmau9E2NxIzed9Z9gn_EqG7CPYHiPqKQc6uucwcQjN86jSRYaRgERo_kqN1y1B_I6ljMAokOpF7mg&_nc_zt=23&_nc_ht=scontent.fsgn5-3.fna&_nc_gid=88ptrUvSFZc2Q_cJaZGhEQ&_nc_ss=7b2a8&oh=00_AQBbIG49IewnP2Gd5YAfWV2BAgKJi8Mh6lTrD7_fUL9Wcg&oe=6A599C85" 
+                 alt="Avatar" 
+                 class="relative w-full h-full object-cover rounded-full border-4 border-white shadow-xl">
+        </div>
+
+        <!-- Tên & Giới thiệu ngắn -->
+        <h1 class="text-3xl font-bold text-gray-900 mb-2 drop-shadow-md">Kiệt Vũ</h1>
+        <p class="text-gray-800 font-medium text-center mb-8 bg-white/30 px-4 py-1 rounded-full shadow-sm">
+            ✨ Welcome to my colorful world ✨
+        </p>
+
+        <!-- Danh sách Liên Kết Mạng Xã Hội -->
+        <div class="w-full flex flex-col gap-4 mb-8">
+            
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/messages/t/6606528699419963" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#1877F2] flex items-center justify-center text-white text-xl shadow-md group-hover:bg-[#166FE5] transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <span>Facebook Message</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-gray-800 transition-colors"></i>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#C13584] flex items-center justify-center text-white text-xl shadow-md transition-transform group-hover:scale-105">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <span>Instagram</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-gray-800 transition-colors"></i>
+            </a>
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@kietvu8480" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white text-xl shadow-md group-hover:bg-gray-800 transition-colors">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <span>TikTok</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-gray-800 transition-colors"></i>
+            </a>
+
+            <!-- Discord -->
+            <a href="https://discord.com/channels/@me" target="_blank" class="glass-btn flex items-center justify-between px-6 py-4 rounded-2xl w-full text-gray-800 font-semibold no-underline group">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#5865F2] flex items-center justify-center text-white text-xl shadow-md group-hover:bg-[#4752C4] transition-colors">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <span>Discord</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 group-hover:text-gray-800 transition-colors"></i>
+            </a>
+        </div>
+
+        <!-- Trình Phát Video MP4 (Thay thế YouTube/ZingMP3) -->
+        <div class="w-full bg-white/50 backdrop-blur-xl border border-white/60 rounded-2xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex flex-col gap-3">
+            <div class="flex items-center justify-between mb-1">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
+                    <i class="fas fa-film text-lg"></i> Video Của Tôi
+                </span>
+                <span class="text-xs font-semibold text-gray-700 bg-white/60 px-3 py-1 rounded-full truncate max-w-[140px]">BTT - SPIDEYBOY</span>
+            </div>
+            
+            <!-- Container responsive cho Video MP4 -->
+            <div class="w-full aspect-video rounded-xl overflow-hidden shadow-inner bg-black relative">
+                <!-- Tệp video nội bộ: Đảm bảo file video.mp4 nằm cùng thư mục với file index.html -->
+                <video 
+                    class="w-full h-full object-cover" 
+                    controls 
+                    loop 
+                    playsinline
+                    src="video.mp4">
+                    Trình duyệt của bạn không hỗ trợ thẻ video.
+                </video>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('floating-container');
+            
+            // Các icon sẽ bay lơ lửng (nốt nhạc, trái tim, ngôi sao)
+            const icons = [
+                '<i class="fas fa-music" style="color: rgba(255,255,255,0.7);"></i>',
+                '<i class="fas fa-heart" style="color: rgba(255,107,107,0.7);"></i>',
+                '<i class="fas fa-star" style="color: rgba(255,221,89,0.7);"></i>',
+                '<div style="width: 20px; height: 20px; background: rgba(255,255,255,0.4); border-radius: 50%; backdrop-filter: blur(4px);"></div>' // Bong bóng
+            ];
+
+            // Hàm tạo một phần tử bay
+            function createFloatingElement() {
+                const el = document.createElement('div');
+                el.classList.add('floating-element');
+                
+                // Chọn ngẫu nhiên 1 icon
+                el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                
+                // Vị trí ngang ngẫu nhiên
+                el.style.left = Math.random() * 100 + 'vw';
+                
+                // Kích thước ngẫu nhiên
+                const size = Math.random() * 1.5 + 0.5;
+                el.style.transform = `scale(${size})`;
+                
+                // Tốc độ bay ngẫu nhiên (từ 10s đến 25s)
+                const duration = Math.random() * 15 + 10;
+                el.style.animationDuration = duration + 's';
+                
+                // Độ trễ ngẫu nhiên
+                el.style.animationDelay = Math.random() * 5 + 's';
+
+                container.appendChild(el);
+
+                // Xóa phần tử sau khi bay xong để giải phóng bộ nhớ
+                setTimeout(() => {
+                    el.remove();
+                }, duration * 1000);
+            }
+
+            // Tạo các phần tử ban đầu
+            for(let i = 0; i < 15; i++) {
+                setTimeout(createFloatingElement, Math.random() * 3000);
+            }
+
+            // Liên tục tạo thêm phần tử mới
+            setInterval(createFloatingElement, 2000);
+        });
+    </script>
+</body>
+</html>
