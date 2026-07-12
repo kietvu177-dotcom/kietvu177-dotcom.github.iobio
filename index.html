@@ -26,6 +26,7 @@
             background-position: center;
             background-attachment: fixed;
             color: #333;
+            overflow-x: hidden; /* Ngăn cuộn ngang nếu con mèo lọt ra ngoài */
         }
 
         /* Lớp phủ làm mờ ảnh nền để nổi bật chữ */
@@ -81,6 +82,18 @@
             position: relative;
             z-index: 10;
         }
+
+        /* Thêm CSS cho con mèo */
+        #cat {
+            position: fixed; /* Dùng fixed để mèo luôn ở trên màn hình kể cả khi cuộn */
+            font-size: 50px; 
+            z-index: 9999; /* Đảm bảo mèo luôn nằm trên cùng */
+            user-select: none; 
+            pointer-events: none; /* Không cản trở việc click vào các nút bên dưới */
+            top: 50%;
+            left: 50%;
+            /* Bỏ translate ở đây vì JS sẽ tự tính toán vị trí tuyệt đối */
+        }
     </style>
 </head>
 
@@ -90,6 +103,9 @@
     
     <!-- Vùng chứa bong bóng bay bổng -->
     <div id="bubbles-container"></div>
+
+    <!-- NỘI DUNG MỚI: Thẻ div của con mèo -->
+    <div id="cat">🐈</div>
 
     <!-- Nội dung chính -->
     <div class="main-container max-w-md mx-auto pt-16 pb-20 px-5 flex flex-col items-center">
@@ -185,6 +201,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- 1. LOGIC BONG BÓNG ---
             const bubblesContainer = document.getElementById('bubbles-container');
             const bubbleCount = 15; // Số lượng bong bóng
 
@@ -210,6 +227,77 @@
 
                 bubblesContainer.appendChild(bubble);
             }
+
+            // --- 2. LOGIC CON MÈO CHẠY ---
+            const cat = document.getElementById('cat');
+
+            // Khởi tạo vị trí ngẫu nhiên
+            let x = Math.random() * (window.innerWidth - 50);
+            let y = Math.random() * (window.innerHeight - 50);
+
+            // Tốc độ và hướng di chuyển
+            let speedX = 3;
+            let speedY = 3;
+            let facingRight = true;
+
+            // Đặt ngẫu nhiên hướng ban đầu
+            if (Math.random() > 0.5) { speedX = -speedX; facingRight = false; }
+            if (Math.random() > 0.5) { speedY = -speedY; }
+
+            function animateCat() {
+                // Cập nhật vị trí
+                x += speedX;
+                y += speedY;
+
+                // Lấy ranh giới màn hình
+                const catRect = cat.getBoundingClientRect();
+                const rightEdge = window.innerWidth - catRect.width;
+                const bottomEdge = window.innerHeight - catRect.height;
+
+                // Kiểm tra va chạm viền ngang (X)
+                if (x <= 0) {
+                    x = 0;
+                    speedX = -speedX; // Đảo hướng
+                    facingRight = true; // Mèo quay sang phải
+                } else if (x >= rightEdge) {
+                    x = rightEdge;
+                    speedX = -speedX; // Đảo hướng
+                    facingRight = false; // Mèo quay sang trái
+                }
+
+                // Kiểm tra va chạm viền dọc (Y)
+                if (y <= 0) {
+                    y = 0;
+                    speedY = -speedY; // Đảo hướng
+                } else if (y >= bottomEdge) {
+                    y = bottomEdge;
+                    speedY = -speedY; // Đảo hướng
+                }
+
+                // Cập nhật CSS hiển thị
+                cat.style.left = x + 'px';
+                cat.style.top = y + 'px';
+                
+                // Lật mặt con mèo tùy theo hướng đi
+                if (facingRight) {
+                    cat.style.transform = 'scaleX(1)';
+                } else {
+                    cat.style.transform = 'scaleX(-1)'; // Lật ngược theo chiều ngang
+                }
+
+                // Yêu cầu frame tiếp theo
+                requestAnimationFrame(animateCat);
+            }
+
+            // Bắt đầu chạy animation con mèo
+            animateCat();
+
+            // Xử lý khi thay đổi kích thước cửa sổ để mèo không rớt ra ngoài
+            window.addEventListener('resize', () => {
+                 const catRect = cat.getBoundingClientRect();
+                 if (x > window.innerWidth - catRect.width) x = window.innerWidth - catRect.width;
+                 if (y > window.innerHeight - catRect.height) y = window.innerHeight - catRect.height;
+            });
         });
     </script>
 </body>
