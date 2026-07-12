@@ -15,13 +15,13 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background-color: #05050a; /* Nền tối phòng hờ khi video đang tải */
+            background-color: #05050a; /* Nền tối phòng hờ khi video chưa tải xong */
             color: #fff;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Video nền động phủ kín màn hình */
+        /* Thẻ video làm nền động bao phủ toàn màn hình */
         .video-bg {
             position: fixed;
             top: 0;
@@ -33,12 +33,12 @@
             pointer-events: none;
         }
 
-        /* Lớp phủ mờ bảo vệ nội dung, giúp chữ dễ đọc hơn */
+        /* Lớp phủ mờ giúp giao diện nổi bật, chữ dễ đọc hơn */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.45); /* Làm tối video nhẹ để nổi bật chữ */
-            backdrop-filter: blur(2px); /* Mờ nhẹ (2px) để giữ lại chi tiết tuyệt đẹp của mắt lửa và mắt quỷ */
+            backdrop-filter: blur(2px); /* Mờ nhẹ để giữ lại chi tiết mắt lửa và mắt quỷ */
             z-index: -1;
         }
 
@@ -120,12 +120,12 @@
 
 <body class="antialiased">
 
-    <!-- Thẻ video dùng tệp video.crdownload.mp4 làm background động -->
     <video autoplay loop muted playsinline class="video-bg">
         <source src="video.crdownload.mp4" type="video/mp4">
-        Trình duyệt của bạn không hỗ trợ video nền.
+        Trình duyệt của bạn không hỗ trợ thẻ video này làm nền.
     </video>
 
+    <!-- Các lớp phủ và hạt bong bóng -->
     <div class="bg-overlay"></div>
     <div id="bubbles-container"></div>
     <div id="cat">🐈</div>
@@ -212,7 +212,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Bubbles
+            // Khởi tạo bong bóng bay
             const bubblesContainer = document.getElementById('bubbles-container');
             for (let i = 0; i < 15; i++) {
                 const bubble = document.createElement('div');
@@ -226,12 +226,12 @@
                 bubblesContainer.appendChild(bubble);
             }
 
-            // Cat Logic
+            // Hoạt ảnh chú mèo chạy nhảy
             const cat = document.getElementById('cat');
             let x = Math.random() * (window.innerWidth - 50);
             let y = Math.random() * (window.innerHeight - 50);
-            let speedX = 1.5; // Giảm tốc độ mèo một chút để mượt hơn
-            let speedY = 1.5;
+            let speedX = 1.5; // Tốc độ di chuyển ngang của mèo mượt mà hơn
+            let speedY = 1.5; // Tốc độ di chuyển dọc
             let facingRight = true;
 
             function animateCat() {
